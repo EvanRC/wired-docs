@@ -13,9 +13,57 @@ const initdb = async () =>
   });
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
-export const putDb = async (content) => console.error('putDb not implemented');
+export const putDb = async (content) => {
+  try {
+
+    // Create a connection to the database and version we want to use.
+    const jateDb = await openDB('jate', 1);
+
+    // Create a new transaction and specify the database and data privileges
+    const tx = jateDb.transaction('jate', 'readwrite');
+
+    // Open the desired object store
+    const store = tx.objectStore('jate');
+
+    // Use the .add() method on the store and pass in the content.
+    const request = store.put({ content });
+
+    // Get confirmation of the request.
+    const result = await request;
+    console.log('Data saved to the database!', result);
+  } catch (error) {
+    // Handle any error that could occur in the transaction
+    console.error('Could not put data in the databse', error);
+    throw new Error('putDb failed', { cause: error });
+  }
+};
 
 // TODO: Add logic for a method that gets all the content from the database
-export const getDb = async () => console.error('getDb not implemented');
+export const getDb = async () => {
+  try {
+
+    // Create a connection to the database ad version we want to use.
+    const jateDb = await openDB('jate', 1);
+
+    // Create a new transaction and specify the database and data privileges
+    const tx = jateDb.transaction('jate', 'readonly');
+
+    // Open up the desired object store
+    const store = tx.objectStore('jate');
+
+    // Use the .getAll() method to get all the data n the database
+    const request = store.getAll();
+
+    //Get confirmation of the request
+    const result = await request;
+    console.log('result.value', result);
+    return result;
+  } catch (error) {
+    // Handle any error that occur during the transaction
+    console.error('Could not get data from the database', error);
+    throw new Error('getDb failed', { cause: error });
+  }
+
+};
 
 initdb();
