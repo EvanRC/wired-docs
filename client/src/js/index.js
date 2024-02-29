@@ -2,9 +2,11 @@ import { Workbox } from 'workbox-window';
 import Editor from './editor';
 import './database';
 import '../css/style.css';
+import { putDb, getDb } from './database';
+
 
 const main = document.querySelector('#main');
-main.innerHTML = '';
+main.innerHTML = ''; // Clears the main element
 
 const loadSpinner = () => {
   const spinner = document.createElement('div');
@@ -17,11 +19,42 @@ const loadSpinner = () => {
   main.appendChild(spinner);
 };
 
-const editor = new Editor();
+// Function to remove spinner 
+const removeSpinner = () => {
+  const spinner = document.querySelector('.spinner'); // select the spinner element
+  if (spinner) {
+    spinner.remove();
+  }
+};
 
-if (typeof editor === 'undefined') {
-  loadSpinner();
-}
+
+
+// Retrive data from indexDB on DOMcontentLoaded
+document.addEventListener('DOMContentLoaded', async () => {
+  loadSpinner(); // Call load spinner function here
+
+  const editor = new Editor();
+  main.appendChild(editor.element); // Append the editor once created 
+
+  const data = await getDb();
+  if (data.lentth > 0) {
+    editor.setContent(data[0].content); // Set the editor content
+  }
+
+  // Save data to IndexDB on blur event 
+editor.element.addEventListener('blur', async () => {
+  const content = editor.getContent();
+  await putDb(content);
+ });
+
+  removeSpinner(); // Remove spinner after setting the content
+
+  // Save data to IndexDB on blur event
+  editor.element.on('blur', async () => {
+    const content = editor.editor.getValue();
+    await putDb(content);
+  });
+});
 
 // Check if service workers are supported
 if ('serviceWorker' in navigator) {
