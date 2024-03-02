@@ -1,43 +1,44 @@
 const butInstall = document.getElementById('buttonInstall');
 
 // Logic for installing the PWA
-// TODO: Add an event handler to the `beforeinstallprompt` event
+// Add an event handler to the `beforeinstallprompt` event
+let deferredPrompt; 
 window.addEventListener('beforeinstallprompt', (event) => {
-    // Prevent Chrome 67 and earlier from automattically showing the prompt 
-    event.preventDefualt();
+    // Prevent Chrome 67 and earlier from automatically showing the prompt 
+    event.preventDefault();
 
     // Stash the event so it can be triggered later 
-    defferredPrompt = event;
+    deferredPrompt = event; // Corrected variable name
 
     // Update UI to notify the user they can add to home screen
     butInstall.style.display = 'block';
 });
 
-// TODO: Implement a click event handler on the `butInstall` element
+// Implement a click event handler on the `butInstall` element
 butInstall.addEventListener('click', async () => {
-    if (defferredPrompt) {
+    if (deferredPrompt) {
         // Show the install prompt
-        defferredPrompt.prompt();
+        deferredPrompt.prompt();
 
         // Wait for the user to respond to the prompt 
-        const { outcome } = await defferredPrompt.userChoice;
+        const { outcome } = await deferredPrompt.userChoice;
 
         if (outcome === 'accepted') {
-            console.log('User accepted install prompt');
+            console.log('User accepted the install prompt');
         } else {
             console.log('User dismissed the install prompt');
         }
 
-
-        deferredPrompt = null;
+        deferredPrompt = null; // Reset the deferredPrompt variable
 
         // Hide the install button after the prompt is shown 
         butInstall.style.display = 'none';
     }
 });
 
-// TODO: Add an handler for the `appinstalled` event
+// Add a handler for the `appinstalled` event
 window.addEventListener('appinstalled', (event) => {
     console.log('PWA has been installed');
+    // Optionally, hide the install button when the app is installed
     butInstall.style.display = 'none';
 });

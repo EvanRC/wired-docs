@@ -19,42 +19,11 @@ const loadSpinner = () => {
   main.appendChild(spinner);
 };
 
-// Function to remove spinner 
-const removeSpinner = () => {
-  const spinner = document.querySelector('.spinner'); // select the spinner element
-  if (spinner) {
-    spinner.remove();
-  }
-};
+const editor = new Editor();
 
-
-
-// Retrive data from indexDB on DOMcontentLoaded
-document.addEventListener('DOMContentLoaded', async () => {
-  loadSpinner(); // Call load spinner function here
-
-  const editor = new Editor();
-  main.appendChild(editor.element); // Append the editor once created 
-
-  const data = await getDb();
-  if (data.lentth > 0) {
-    editor.setContent(data[0].content); // Set the editor content
-  }
-
-  // Save data to IndexDB on blur event 
-editor.element.addEventListener('blur', async () => {
-  const content = editor.getContent();
-  await putDb(content);
- });
-
-  removeSpinner(); // Remove spinner after setting the content
-
-  // Save data to IndexDB on blur event
-  editor.element.on('blur', async () => {
-    const content = editor.editor.getValue();
-    await putDb(content);
-  });
-});
+if (typeof editor === 'undefined') {
+  loadSpinner();
+}
 
 // Check if service workers are supported
 if ('serviceWorker' in navigator) {

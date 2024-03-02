@@ -54,4 +54,3 @@ registerRoute(
     ],
   })
 );
-registerRoute();

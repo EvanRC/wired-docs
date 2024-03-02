@@ -28,8 +28,8 @@ module.exports = (env, argv) => {
       new WebpackPwaManifest({
         fingerprints: false,
         inject: true,
-        name: 'wired-docs',
-        short_name: 'w-dcs',
+        name: 'Just Another Text Editor',
+        short_name: 'jate',
         description: 'A PWA that takes the form of a text editor!',
         background_color: '#ffffff',
         theme_color: '#ffffff',
@@ -43,12 +43,13 @@ module.exports = (env, argv) => {
         ],
       }),
       new InjectManifest({
-        swSrc: './src/src-sw.js',
-        swDest: 'service-worker.js',
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { from: 'src/manifest.json', to: 'manifest.json' } // Copies manifest from src to dist 
+          { from: 'src/manifest.json', to: 'manifest.json' },  // Copies manifest from src to dist 
+          { from: 'src/images', to: 'assets/icons' },
         ],
       }),
     ],
