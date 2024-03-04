@@ -16,7 +16,7 @@ A PWA text editor I finished building upon starter code provided by UC Davis cod
 ## Installation
 
 Go to deployed website link below and press the install button on the homepage!
-# https://wired-docs.onrender.com/
+### https://wired-docs.onrender.com/
 
 ## Usage
 
