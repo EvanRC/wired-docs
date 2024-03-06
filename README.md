@@ -26,6 +26,10 @@ You can use it to create code snippets, or even write an essay. Truly at it's co
 
 UC Davis coding bootcamp provided starter code.
 
+## Website screenshot:
+![image](https://github.com/EvanRC/wired-docs/assets/124648885/60373dc4-d0f1-4098-b15e-683f3ce991c0)
+
+
 ## License
 
 
